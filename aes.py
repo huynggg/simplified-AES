@@ -80,6 +80,68 @@ def print_padded(content, file_name):
 			print("\n", end='')
 			file.write("\n")
 
+# Function to convert string to matrix of 4x4
+def string_to_matrix(content):
+	matrix = []
+	temp = []
+	for i in range(0, len(content)):
+		k = i + 1
+		temp.append(content[i])
+		if k % 4 == 0:
+			matrix.append(temp)
+			temp = []
+	return matrix
+
+# Function to shift element(s) by row position
+def shift_by_position(content, position):
+	temp = [0,0,0,0]
+	if (position == 0):
+		temp[0] = content[0]
+		temp[1] = content[1]
+		temp[2] = content[2]
+		temp[3] = content[3]
+	if (position == 1):
+		temp[0] = content[1]
+		temp[1] = content[2]
+		temp[2] = content[3]
+		temp[3] = content[0]
+	if (position == 2):
+		temp[0] = content[2]
+		temp[1] = content[3]
+		temp[2] = content[0]
+		temp[3] = content[1]
+	if (position == 3):
+		temp[0] = content[3]
+		temp[1] = content[0]
+		temp[2] = content[1]
+		temp[3] = content[2]
+	return temp
+
+# Function to shift the matrix
+def shifting(content):
+	position = 0
+	temp = []
+	for i in range(len(content)):
+		if position > 3:
+			position = 0
+		temp.append(shift_by_position(content[i],position))
+		position += 1
+	return temp
+
+# Function to print shifted content/matrix
+def print_shifted(content, file_name):
+	file = open(file_name, "a")
+	file.write("Shifting:\n")
+	for i in range(len(content)):
+		if i % 4 == 0:
+			print("\n", end='')
+			file.write("\n")
+		for j in range(4):
+			print(content[i][j], end='')
+			file.write(content[i][j] + "")
+		print("\n",end='')
+		file.write("\n")
+
 
 # Driver code
 def driver_code():
@@ -88,8 +150,9 @@ def driver_code():
 	key_filename = input("Enter the name of the input key file: ")
 	output_filename = input("Enter the name of the output ciphertext file: ")
 
-	input_content = read_data(input_filename) # save input's content
-	key_content = read_data(key_filename) # save key's content
+	# variables to save inputs
+	input_content = read_data(input_filename)
+	key_content = read_data(key_filename)
 
 	# Part a - Preprocessing
 	processed_content = pre_processing(input_content) # save input after processing
@@ -105,12 +168,22 @@ def driver_code():
 
 	result = "\n\nSubstitution:\n" + subs_content # temporary variable to save the result
 	write_data(result, output_filename) # save to output file
-	print(type(subs_content))
+
 
 	# Part c - Padding
 	padded_content = padding(subs_content)
 	print(f'\nPadding:')
 	print_padded(padded_content, output_filename) # Print to the screen & save to file
+	
+	# Part d - Shifting 
+	padded_content = string_to_matrix(padded_content) # Convert string to a matrix
+	shifted_content = shifting(padded_content)
+	print(f'Shifting:')
+	print_shifted(shifted_content, output_filename) # Print to the screen & save to file
+	
+
+
+		
 
 
 # Main
