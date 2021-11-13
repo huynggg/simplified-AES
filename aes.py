@@ -6,6 +6,7 @@
 
 import re
 
+# ------------------------- # 
 # Read in input file.
 def read_data(file_name):
 	
@@ -131,7 +132,7 @@ def shifting(content):
 # Function to print shifted content/matrix
 def print_shifted(content, file_name):
 	file = open(file_name, "a")
-	file.write("Shifting:\n")
+	file.write("Shifting:")
 	for i in range(len(content)):
 		if i % 4 == 0:
 			print("\n", end='')
@@ -142,7 +143,49 @@ def print_shifted(content, file_name):
 		print("\n",end='')
 		file.write("\n")
 
+# Function to convert a single character to binary, 
+# also check for Parity Bit condition
+def string_to_binary(content):
+	temp = format(ord(content), '08b')
+	counter = 0
+	result = []
+	result[:0] = temp
+	for i in result:
+		if i == "1":
+			counter+=1
+	if counter % 2 != 0:
+		result[0] = "1"
+	result = ''.join(map(str,result))
+	return result
 
+# Function to convert a string of binary 
+# to its hexadecimal value
+def binary_to_hexa(content):
+	# convert binary to int
+    num = int(content, 2)
+    # convert int to hexadecimal
+    hex_num = format(num, 'x')
+    return(hex_num)
+
+# Parity Bit function
+def parity_bit(content):
+	for i in range(len(content)):
+		for j in range(4):
+			content[i][j] = binary_to_hexa(string_to_binary(content[i][j]))
+	return content
+
+# Function to print/write parity bit matrix
+def print_parity_bit(content, file_name):
+	file = open(file_name, "a")
+	file.write("\nParity Bit:\n")
+	for i in range(len(content)):
+		for j in range(4):
+			print(content[i][j] + " ", end='')
+			file.write(content[i][j] + " ")
+		print("\n",end='')
+		file.write("\n")
+
+# --------------------------- #
 # Driver code
 def driver_code():
 	# variables to save user's inputs
@@ -178,10 +221,13 @@ def driver_code():
 	# Part d - Shifting 
 	padded_content = string_to_matrix(padded_content) # Convert string to a matrix
 	shifted_content = shifting(padded_content)
-	print(f'Shifting:')
+	print(f'Shifting:', end='')
 	print_shifted(shifted_content, output_filename) # Print to the screen & save to file
 	
-
+	# Part e - Parity Bit
+	parity_bit_content = parity_bit(shifted_content)
+	print(f'\nParity Bit:')
+	print_parity_bit(parity_bit_content,output_filename)
 
 		
 
