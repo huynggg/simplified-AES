@@ -5,11 +5,13 @@
 # Description: Implementation of a simplified version of AES encryption system. 
 
 import re
+import math
 
 # ------------------------- # 
+
+# --------Part a Functions-------- #
 # Read in input file.
 def read_data(file_name):
-	
 	file = open(file_name, "r")
 	content = file.read()
 	file.close()
@@ -18,7 +20,6 @@ def read_data(file_name):
 
 # Write to an output file.
 def write_data(content, file_name):
-
 	file = open(file_name, "a")
 	for element in content:
 		file.write(element)
@@ -30,6 +31,7 @@ def pre_processing(content):
 	result = re.sub(r'\s+', '', result)
 	return result
 
+# --------Part b Functions-------- #
 # Generate a key for Vigenère Cipher.
 def generate_key(content, key):
     processed_key = []
@@ -55,6 +57,8 @@ def substitution(content, key):
         cipher_text.append(chr(x))
     return("" . join(cipher_text))
 
+
+# --------Part c Functions-------- #
 # Padding function.
 def padding(content):
 	if (content != None) and len(content):
@@ -81,6 +85,7 @@ def print_padded(content, file_name):
 			print("\n", end='')
 			file.write("\n")
 
+# --------Part d Functions-------- #
 # Function to convert string to matrix of 4x4
 def string_to_matrix(content):
 	matrix = []
@@ -143,6 +148,7 @@ def print_shifted(content, file_name):
 		print("\n",end='')
 		file.write("\n")
 
+# --------Part e Functions-------- #
 # Function to convert a single character to binary, 
 # also check for Parity Bit condition
 def string_to_binary(content):
@@ -176,7 +182,7 @@ def parity_bit(content):
 
 # Function to print/write parity bit matrix
 def print_parity_bit(content, file_name):
-	file = open(file_name, "a")
+	file = open(file_name, "a") 
 	file.write("\nParity Bit:\n")
 	for i in range(len(content)):
 		for j in range(4):
@@ -184,6 +190,63 @@ def print_parity_bit(content, file_name):
 			file.write(content[i][j] + " ")
 		print("\n",end='')
 		file.write("\n")
+
+# --------Part f Functions-------- #
+# Function to perform XOR operation
+# on two binary string of 8 characters
+def binary_xor(x, y):
+    result = "" 
+    # Loop to iterate over the
+    # Binary Strings
+    for i in range(8):
+         
+        # If the Character matches
+        if (x[i] == y[i]):
+            result += "0"
+        else:
+            result += "1"
+    return result
+
+# Function to perform shift left operation
+# on a binary string
+def shift_left(content):
+	# Convert binary string to a list
+	content_list = []
+	content_list[:0] = content
+
+	for i in range(len(content_list)):
+		if i == 7:
+			content_list[i] = "0"
+		else:
+			content_list[i] = content_list[i+1]
+	return content_list
+
+# Function to convert a hex to binary string
+def hex_to_binary(content):
+	result = "{0:08b}".format(int(content, 16))
+	return result
+
+# Function to perform Rijindael's Galois
+# field multiplication. "content" is a single hex,
+# "x" is either 2 or 3.
+def rgfMul(content, x):
+	rgf_value = "00011011"
+	# Convert hex to binary
+	content_binary = hex_to_binary(content)
+	original_content = content_binary
+	# Convert to a list and shift left by 1
+	content_binary = shift_left(content_binary)
+	if x == 2:
+		if original_content[0] == "1":
+			result = binary_xor(content_binary, rgf_value)
+	if x == 3:
+		content_binary = binary_xor(content_binary, original_content)
+		if original_content[0] == "1":
+			result = binary_xor(content_binary, rgf_value)
+	if x == 1:
+		result = original_content
+	return result
+
 
 # --------------------------- #
 # Driver code
@@ -229,7 +292,7 @@ def driver_code():
 	print(f'\nParity Bit:')
 	print_parity_bit(parity_bit_content,output_filename)
 
-		
+	# Part f - Mix Columns
 
 
 # Main
