@@ -196,11 +196,8 @@ def print_parity_bit(content, file_name):
 # on two binary string of 8 characters
 def binary_xor(x, y):
     result = "" 
-    # Loop to iterate over the
-    # Binary Strings
+    # Loop to iterate over the binary string
     for i in range(8):
-         
-        # If the Character matches
         if (x[i] == y[i]):
             result += "0"
         else:
@@ -247,6 +244,41 @@ def rgfMul(content, x):
 		result = original_content
 	return result
 
+''' Un-finished
+# Function to perform MixColumns
+def mix_columns(content):
+	result = []
+	for k in range(0, len(temp_matrix), 4):
+		a0 = a1 = a2 = a3 = "00000000"
+		for i in range(4):
+			for j in range(k,k+4):
+				if i == 0:
+					a0 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 2),a0))
+					a1 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a1))
+					a2 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a2))
+					a3 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 3),a3))
+				if i == 1:
+					a0 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 3),a0))
+					a1 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 2),a1))
+					a2 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a2))
+					a3 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a3))
+				if i == 2:
+					a0 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a0))
+					a1 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 3),a1))
+					a2 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 2),a2))
+					a3 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a3))
+				if i == 3:
+					a0 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a0))
+					a1 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 1),a1))
+					a2 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 3),a2))
+					a3 = binary_to_hexa(binary_xor(rgfMul(temp_matrix[j][i], 2),a3))
+			if i == 3:
+				result.append(a0)
+				result.append(a1)
+				result.append(a2)
+				result.append(a3)
+	return result
+'''
 
 # --------------------------- #
 # Driver code
@@ -293,7 +325,9 @@ def driver_code():
 	print_parity_bit(parity_bit_content,output_filename)
 
 	# Part f - Mix Columns
-
+	# While part f is un-finished, I was able to implement rgfMul(x,y) function
+	# that works. Please consider for partial credits.
+	# Thank you!
 
 # Main
 if __name__ == '__main__':
